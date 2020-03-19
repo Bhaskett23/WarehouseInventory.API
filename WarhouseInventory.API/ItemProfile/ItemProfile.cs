@@ -14,6 +14,12 @@ namespace WarehouseInventory.API.ItemProfile
             CreateMap<ItemForCreation, Item>();
 
             CreateMap<Item, ItemForCreation>();
+
+            CreateMap<Item, ItemForUpdate>();
+
+            CreateMap<ItemForUpdate, Item>();
+
+            CreateMap<ItemForUpdate, ItemForCreation>();
         }
     }
 }

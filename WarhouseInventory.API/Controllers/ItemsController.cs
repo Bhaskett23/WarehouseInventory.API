@@ -75,7 +75,7 @@ namespace WarehouseInventory.API.Controllers
         }
 
         [HttpPatch("{Id}")]
-        public ActionResult<Item> PartiallyUpdateItem(int id, JsonPatchDocument<ItemForCreation> patchDocument)
+        public ActionResult<Item> PartiallyUpdateItem(int id, JsonPatchDocument<ItemForUpdate> patchDocument)
         {
             Item itemToUpdate = _warehouseInventoryRepository.GetItem(id);
 
@@ -84,10 +84,25 @@ namespace WarehouseInventory.API.Controllers
                 return NotFound();
             }
 
-            ItemForCreation itemForCreation = _mapper.Map<ItemForCreation>(itemToUpdate);
+            ItemForUpdate itemForUpdating = _mapper.Map<ItemForUpdate>(itemToUpdate);
 
-            patchDocument.ApplyTo(itemForCreation, ModelState);
+            patchDocument.ApplyTo(itemForUpdating, ModelState);
 
+            if(!TryValidateModel(itemForUpdating))
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            _mapper.Map(itemForUpdating, itemToUpdate);
+
+            return NoContent();
+        }
+
+        [HttpOptions]
+        public IActionResult GetItemOptions()
+        {
+            Response.Headers.Add("Allow", "GET,OPTIONS,POST,PUT,PATCH");
+            return Ok();
         }
     }
 }

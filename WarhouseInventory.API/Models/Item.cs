@@ -11,6 +11,7 @@
             Supplier = supplier;
             SellingPrice = sellingPrice;
         }
+
         public Item()
         {
 
