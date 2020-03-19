@@ -11,6 +11,7 @@
             Supplier = supplier;
             SellingPrice = sellingPrice;
         }
+
         public Item()
         {
 
@@ -25,7 +26,7 @@
 
         public string Supplier { get; set; }
 
-        public int SellingPrice { get; set; }
+        public double SellingPrice { get; set; }
 
     }
 }
