@@ -12,7 +12,7 @@ namespace WarehouseInventory.API.Controllers
     [Route("api/items")]
     public class ItemsController : ControllerBase
     {
-        private readonly IWarehouseInventoryRepository _warehouseInventoryRepository;
+        private static IWarehouseInventoryRepository _warehouseInventoryRepository;
         public ItemsController()
         {
             if(_warehouseInventoryRepository == null)
@@ -21,7 +21,7 @@ namespace WarehouseInventory.API.Controllers
             }
         }
 
-        [HttpGet()]
+        [HttpGet]
         public ActionResult<IEnumerable<Item>> GetItems()
         {
             var items = _warehouseInventoryRepository.GetItems();
@@ -34,7 +34,20 @@ namespace WarehouseInventory.API.Controllers
         {
             Item item = _warehouseInventoryRepository.GetItem(id);
 
+            if(item == null)
+            {
+                return NotFound();
+            }
+
             return Ok(item);
+        }
+
+        [HttpPost]
+        public ActionResult<Item> CreateItem(Item item)
+        {
+            _warehouseInventoryRepository.AddItem(item);
+
+            return Ok();
         }
     }
 }

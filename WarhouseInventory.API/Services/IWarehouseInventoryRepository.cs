@@ -10,5 +10,6 @@ namespace WarehouseInventory.API.Services
     {
         IEnumerable<Item> GetItems();
         Item GetItem(int itemId);
+        void AddItem(Item item);
     }
 }
