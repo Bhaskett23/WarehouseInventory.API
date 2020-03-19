@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace WarehouseInventory.API.Controllers
             return Ok(items);
         }
 
-        [HttpGet("{Id}")]
+        [HttpGet("{Id}", Name = "GetItem")]
         public ActionResult<Item> GetItem(int id)
         {
             Item item = _warehouseInventoryRepository.GetItem(id);
@@ -54,13 +55,39 @@ namespace WarehouseInventory.API.Controllers
 
             _warehouseInventoryRepository.AddItem(newItem);
 
-            return Ok();
+            return CreatedAtRoute("GetItem", new {id = newItem.Id }, newItem);
         }
 
-       // [HttpPut("{Id}")]
-       // public ActionResult UpdateItem(int id, ItemForCreation)
-       // {
-       //
-       // }
+        [HttpPut("{Id}")]
+        public ActionResult UpdateItem(int id, ItemForCreation item)
+        {
+            Item itemToUpdate = _warehouseInventoryRepository.GetItem(id);
+            if(itemToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(item, itemToUpdate);
+
+            _warehouseInventoryRepository.UpdateItem(item);
+
+            return NoContent();
+        }
+
+        [HttpPatch("{Id}")]
+        public ActionResult<Item> PartiallyUpdateItem(int id, JsonPatchDocument<ItemForCreation> patchDocument)
+        {
+            Item itemToUpdate = _warehouseInventoryRepository.GetItem(id);
+
+            if(itemToUpdate == null)
+            {
+                return NotFound();
+            }
+
+            ItemForCreation itemForCreation = _mapper.Map<ItemForCreation>(itemToUpdate);
+
+            patchDocument.ApplyTo(itemForCreation, ModelState);
+
+        }
     }
 }

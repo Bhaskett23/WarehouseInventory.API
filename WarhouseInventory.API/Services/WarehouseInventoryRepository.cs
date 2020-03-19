@@ -31,5 +31,10 @@ namespace WarehouseInventory.API.Services
             item.Id = _context.Items.Max(x => x.Id) + 1;
             _context.Items.Add(item);
         }
+
+        public void UpdateItem(ItemForCreation item)
+        {
+            
+        }
     }
 }
