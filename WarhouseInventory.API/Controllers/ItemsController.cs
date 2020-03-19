@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,12 @@ namespace WarehouseInventory.API.Controllers
     public class ItemsController : ControllerBase
     {
         private static IWarehouseInventoryRepository _warehouseInventoryRepository;
-        public ItemsController()
+        private readonly IMapper _mapper;
+
+        public ItemsController(IMapper mapper)
         {
+            _mapper = mapper;
+
             if(_warehouseInventoryRepository == null)
             {
                 _warehouseInventoryRepository = new WarehouseInventoryRepository();
@@ -43,11 +48,19 @@ namespace WarehouseInventory.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Item> CreateItem(Item item)
+        public ActionResult<Item> CreateItem(ItemForCreation item)
         {
-            _warehouseInventoryRepository.AddItem(item);
+            Item newItem = _mapper.Map<Item>(item);
+
+            _warehouseInventoryRepository.AddItem(newItem);
 
             return Ok();
         }
+
+       // [HttpPut("{Id}")]
+       // public ActionResult UpdateItem(int id, ItemForCreation)
+       // {
+       //
+       // }
     }
 }
