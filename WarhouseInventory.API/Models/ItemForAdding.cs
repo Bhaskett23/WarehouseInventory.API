@@ -1,8 +1,8 @@
 ﻿namespace WarehouseInventory.API.Models
 {
-    public class Item
+    public class ItemForAdding
     {
-        public Item(int id, string name, string description, int amount, string supplier, int sellingPrice)
+        public ItemForAdding(int id, string name, string description, int amount, string supplier, int sellingPrice)
         {
             Id = id;
             Name = name;
@@ -12,7 +12,7 @@
             SellingPrice = sellingPrice;
         }
 
-        public Item()
+        public ItemForAdding()
         {
 
         }

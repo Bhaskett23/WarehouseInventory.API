@@ -8,9 +8,9 @@ namespace WarehouseInventory.API.Services
 {
     public interface IWarehouseInventoryRepository
     {
-        IEnumerable<Item> GetItems();
-        Item GetItem(int itemId);
-        void AddItem(Item item);
+        IEnumerable<ItemForAdding> GetItems();
+        ItemForAdding GetItem(int itemId);
+        void AddItem(ItemForAdding item);
         void UpdateItem(ItemForCreation item);
     }
 }

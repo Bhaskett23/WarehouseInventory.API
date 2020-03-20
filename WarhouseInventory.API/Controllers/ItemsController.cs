@@ -14,21 +14,18 @@ namespace WarehouseInventory.API.Controllers
     [Route("api/items")]
     public class ItemsController : ControllerBase
     {
-        private static IWarehouseInventoryRepository _warehouseInventoryRepository;
+        private readonly IWarehouseInventoryRepository _warehouseInventoryRepository;
         private readonly IMapper _mapper;
 
-        public ItemsController(IMapper mapper)
+        public ItemsController(IMapper mapper, IWarehouseInventoryRepository warehouseInventoryRepository)
         {
             _mapper = mapper;
 
-            if(_warehouseInventoryRepository == null)
-            {
-                _warehouseInventoryRepository = new WarehouseInventoryRepository();
-            }
+            _warehouseInventoryRepository = warehouseInventoryRepository;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Item>> GetItems()
+        public ActionResult<IEnumerable<ItemForAdding>> GetItems()
         {
             var items = _warehouseInventoryRepository.GetItems();
 
@@ -36,9 +33,9 @@ namespace WarehouseInventory.API.Controllers
         }
 
         [HttpGet("{Id}", Name = "GetItem")]
-        public ActionResult<Item> GetItem(int id)
+        public ActionResult<ItemForAdding> GetItem(int id)
         {
-            Item item = _warehouseInventoryRepository.GetItem(id);
+            ItemForAdding item = _warehouseInventoryRepository.GetItem(id);
 
             if(item == null)
             {
@@ -49,9 +46,9 @@ namespace WarehouseInventory.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Item> CreateItem(ItemForCreation item)
+        public ActionResult<ItemForAdding> CreateItem(ItemForCreation item)
         {
-            Item newItem = _mapper.Map<Item>(item);
+            ItemForAdding newItem = _mapper.Map<ItemForAdding>(item);
 
             _warehouseInventoryRepository.AddItem(newItem);
 
@@ -61,7 +58,7 @@ namespace WarehouseInventory.API.Controllers
         [HttpPut("{Id}")]
         public ActionResult UpdateItem(int id, ItemForCreation item)
         {
-            Item itemToUpdate = _warehouseInventoryRepository.GetItem(id);
+            ItemForAdding itemToUpdate = _warehouseInventoryRepository.GetItem(id);
             if(itemToUpdate == null)
             {
                 return NotFound();
@@ -75,9 +72,9 @@ namespace WarehouseInventory.API.Controllers
         }
 
         [HttpPatch("{Id}")]
-        public ActionResult<Item> PartiallyUpdateItem(int id, JsonPatchDocument<ItemForUpdate> patchDocument)
+        public ActionResult<ItemForAdding> PartiallyUpdateItem(int id, JsonPatchDocument<ItemForUpdate> patchDocument)
         {
-            Item itemToUpdate = _warehouseInventoryRepository.GetItem(id);
+            ItemForAdding itemToUpdate = _warehouseInventoryRepository.GetItem(id);
 
             if(itemToUpdate == null)
             {

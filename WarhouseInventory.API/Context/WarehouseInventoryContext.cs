@@ -12,20 +12,38 @@ namespace WarehouseInventory.API.Context
         public WarehouseInventoryContext(DbContextOptions<WarehouseInventoryContext> options) : base(options)
         {}
 
-        public DbSet<Item> Items { get; set; }
+        public DbSet<ItemForAdding> Items { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-
+            modelBuilder.Entity<ItemForAdding>().HasData(
+                new ItemForAdding()
+                {
+                    Id = 1,
+                    Name = "Soap",
+                    Description = "Comes in multiple shapes.",
+                    Amount = 20,
+                    Supplier = "Craig's Cleaning Factory.",
+                    SellingPrice = 4.50
+                },
+                new ItemForAdding()
+                {
+                    Id = 2,
+                    Name = "Citedel paint",
+                    Description = "Model paint",
+                    Amount = 123,
+                    Supplier = "Games Workshop",
+                    SellingPrice = 8.50
+                },
+                new ItemForAdding()
+                {
+                    Id = 3,
+                    Name = "Magic the Gathering Packs",
+                    Description = "Collectable card game packs",
+                    Amount = 402,
+                    Supplier = "Wizards of the Coast",
+                    SellingPrice = 7.40
+                });
         }
-        //private void SetUp()
-        //{
-        //    Items = new List<Item>();
-        //    Item medicalItem = new Item(1, "Bandages", "Different kinds of bandages", 10, "Bob's medical supplies", 3);
-        //    Items.Add(medicalItem);
-        //    Item beams = new Item(2, "Construction Beams", "Beams of different length", 30, "Steaves construction supplies", 200);
-        //    Items.Add(beams);
-        //
-        //}
     }
 }

@@ -11,13 +11,13 @@ namespace WarehouseInventory.API.ItemProfile
     {
         public ItemProfile()
         {
-            CreateMap<ItemForCreation, Item>();
+            CreateMap<ItemForCreation, ItemForAdding>();
 
-            CreateMap<Item, ItemForCreation>();
+            CreateMap<ItemForAdding, ItemForCreation>();
 
-            CreateMap<Item, ItemForUpdate>();
+            CreateMap<ItemForAdding, ItemForUpdate>();
 
-            CreateMap<ItemForUpdate, Item>();
+            CreateMap<ItemForUpdate, ItemForAdding>();
 
             CreateMap<ItemForUpdate, ItemForCreation>();
         }
