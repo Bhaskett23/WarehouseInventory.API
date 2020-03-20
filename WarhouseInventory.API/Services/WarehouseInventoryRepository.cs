@@ -13,7 +13,7 @@ namespace WarehouseInventory.API.Services
 
         public WarehouseInventoryRepository()
         {
-            _context = new WarehouseInventoryContext();
+            //_context = new WarehouseInventoryContext();
         }
 
         public Item GetItem(int itemId)
