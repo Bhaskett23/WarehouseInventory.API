@@ -11,8 +11,10 @@ namespace WarehouseInventory.API.Models
         [Required(ErrorMessage = "A name for items in warehouse is required")]
         public string Name { get; set; }
 
+        [Required]
         public string Description { get; set; }
 
+        [Required]
         public int Amount { get; set; }
 
         public string Supplier { get; set; }

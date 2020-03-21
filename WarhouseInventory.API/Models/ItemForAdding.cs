@@ -1,22 +1,10 @@
-﻿namespace WarehouseInventory.API.Models
+﻿using System;
+
+namespace WarehouseInventory.API.Models
 {
     public class ItemForAdding
     {
-        public ItemForAdding(int id, string name, string description, int amount, string supplier, int sellingPrice)
-        {
-            Id = id;
-            Name = name;
-            Description = description;
-            Amount = amount;
-            Supplier = supplier;
-            SellingPrice = sellingPrice;
-        }
-
-        public ItemForAdding()
-        {
-
-        }
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 

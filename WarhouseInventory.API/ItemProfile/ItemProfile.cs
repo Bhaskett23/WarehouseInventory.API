@@ -1,8 +1,4 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using WarehouseInventory.API.Models;
 
 namespace WarehouseInventory.API.ItemProfile
@@ -11,6 +7,14 @@ namespace WarehouseInventory.API.ItemProfile
     {
         public ItemProfile()
         {
+            CreateMap<ItemForCreation, Entities.Item>();
+
+            CreateMap<ItemForUpdate, Entities.Item>();
+
+            CreateMap<Entities.Item, ItemForUpdate>();
+
+            CreateMap<Entities.Item, ItemForAdding>();            
+
             CreateMap<ItemForCreation, ItemForAdding>();
 
             CreateMap<ItemForAdding, ItemForCreation>();

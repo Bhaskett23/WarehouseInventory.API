@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WarehouseInventory.API.Context;
+using WarehouseInventory.API.Entities;
 using WarehouseInventory.API.Models;
 
 namespace WarehouseInventory.API.Services
@@ -17,23 +19,23 @@ namespace WarehouseInventory.API.Services
             //_context = new WarehouseInventoryContext();
         }
 
-        public ItemForAdding GetItem(int itemId)
+        public Item GetItem(Guid itemId)
         {
             return _context.Items.FirstOrDefault(x => x.Id == itemId);
         }
 
-        public IEnumerable<ItemForAdding> GetItems()
+        public IEnumerable<Item> GetItems()
         {
             return _context.Items;
         }
 
-        public void AddItem(ItemForAdding item)
+        public void AddItem(Item item)
         {
-            item.Id = _context.Items.Max(x => x.Id) + 1;
+            item.Id = Guid.NewGuid();
             _context.Items.Add(item);
         }
 
-        public void UpdateItem(ItemForCreation item)
+        public void UpdateItem(Item item)
         {
             
         }
@@ -42,6 +44,11 @@ namespace WarehouseInventory.API.Services
         {
             //Dispose(true);
             GC.SuppressFinalize(true);
+        }
+
+        public bool Save()
+        {
+            return (_context.SaveChanges() >= 0);
         }
     }
 }
