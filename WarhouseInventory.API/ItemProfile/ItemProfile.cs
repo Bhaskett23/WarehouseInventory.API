@@ -15,9 +15,6 @@ namespace WarehouseInventory.API.ItemProfile
 
             CreateMap<Entities.Item, ItemForAdding>()
                 .ForMember(
-                    dest => dest.SupplierId,
-                    opt => opt.MapFrom(x => x.SupplierId))
-                .ForMember(
                     dest => dest.SupplierName,
                     opt => opt.MapFrom(x => x.Supplier.Name));            
 

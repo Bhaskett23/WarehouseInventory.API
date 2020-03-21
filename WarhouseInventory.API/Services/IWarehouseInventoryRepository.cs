@@ -14,5 +14,6 @@ namespace WarehouseInventory.API.Services
         void AddItem(Item item);
         void UpdateItem(Item item);
         bool Save();
+        IEnumerable<Supplier> GetSuppliers();
     }
 }

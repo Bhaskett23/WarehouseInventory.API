@@ -50,5 +50,11 @@ namespace WarehouseInventory.API.Services
         {
             return (_context.SaveChanges() >= 0);
         }
+
+        public IEnumerable<Supplier> GetSuppliers()
+        {
+            IEnumerable<Supplier> t = _context.Suppliers.Include(x => x.Items);
+            return t;
+        }
     }
 }

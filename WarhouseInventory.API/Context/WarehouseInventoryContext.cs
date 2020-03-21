@@ -11,7 +11,8 @@ namespace WarehouseInventory.API.Context
     public class WarehouseInventoryContext : DbContext
     {
         public WarehouseInventoryContext(DbContextOptions<WarehouseInventoryContext> options) : base(options)
-        {}
+        {
+        }
 
         public DbSet<Item> Items { get; set; }
 
@@ -19,7 +20,8 @@ namespace WarehouseInventory.API.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Supplier>().HasData(
+            modelBuilder.Entity<Supplier>()
+                .HasData(
                 new Supplier()
                 {
                     Id = Guid.Parse("d28888e9-2ba9-473a-a40f-e38cb54f9b35"),
@@ -50,10 +52,13 @@ namespace WarehouseInventory.API.Context
                     Email = "BM@BuyersMarkett.com"
                 });
 
+            //modelBuilder.Entity<Supplier>()
+            //    .HasMany(x => x.Items);
+
             modelBuilder.Entity<Item>().HasData(
                 new Item()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = Guid.Parse("5b1c2b4d-48c7-402a-80c3-cc796ad49c6b"),
                     Name = "Soap",
                     Description = "Comes in multiple shapes.",
                     Amount = 20,
@@ -62,7 +67,7 @@ namespace WarehouseInventory.API.Context
                 },
                 new Item()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = Guid.Parse("d8663e5e-7494-4f81-8739-6e0de1bea7ee"),
                     Name = "Citedel paint",
                     Description = "Model paint",
                     Amount = 123,
@@ -71,7 +76,7 @@ namespace WarehouseInventory.API.Context
                 },
                 new Item()
                 {
-                    Id = Guid.NewGuid(),
+                    Id = Guid.Parse("40ff5488-fdab-45b5-bc3a-14302d59869a"),
                     Name = "Magic the Gathering Packs",
                     Description = "Collectable card game packs",
                     Amount = 402,
