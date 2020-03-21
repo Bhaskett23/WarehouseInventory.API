@@ -21,12 +21,12 @@ namespace WarehouseInventory.API.Services
 
         public Item GetItem(Guid itemId)
         {
-            return _context.Items.FirstOrDefault(x => x.Id == itemId);
+            return _context.Items.Include(x => x.Supplier).FirstOrDefault(x => x.Id == itemId);
         }
 
         public IEnumerable<Item> GetItems()
         {
-            return _context.Items;
+            return _context.Items.Include(x => x.Supplier);
         }
 
         public void AddItem(Item item)
