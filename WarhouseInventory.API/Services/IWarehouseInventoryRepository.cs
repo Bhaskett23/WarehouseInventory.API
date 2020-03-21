@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WarehouseInventory.API.Entities;
 using WarehouseInventory.API.Models;
 
 namespace WarehouseInventory.API.Services
@@ -9,8 +10,9 @@ namespace WarehouseInventory.API.Services
     public interface IWarehouseInventoryRepository
     {
         IEnumerable<Item> GetItems();
-        Item GetItem(int itemId);
+        Item GetItem(Guid itemId);
         void AddItem(Item item);
-        void UpdateItem(ItemForCreation item);
+        void UpdateItem(Item item);
+        bool Save();
     }
 }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WarehouseInventory.API.Entities;
 using WarehouseInventory.API.Models;
 using WarehouseInventory.API.Services;
 
@@ -14,29 +15,26 @@ namespace WarehouseInventory.API.Controllers
     [Route("api/items")]
     public class ItemsController : ControllerBase
     {
-        private static IWarehouseInventoryRepository _warehouseInventoryRepository;
+        private readonly IWarehouseInventoryRepository _warehouseInventoryRepository;
         private readonly IMapper _mapper;
 
-        public ItemsController(IMapper mapper)
+        public ItemsController(IMapper mapper, IWarehouseInventoryRepository warehouseInventoryRepository)
         {
             _mapper = mapper;
 
-            if(_warehouseInventoryRepository == null)
-            {
-                _warehouseInventoryRepository = new WarehouseInventoryRepository();
-            }
+            _warehouseInventoryRepository = warehouseInventoryRepository;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Item>> GetItems()
+        public ActionResult<IEnumerable<ItemForAdding>> GetItems()
         {
-            var items = _warehouseInventoryRepository.GetItems();
+            IEnumerable<Item> items = _warehouseInventoryRepository.GetItems();
 
-            return Ok(items);
+            return Ok(_mapper.Map<IEnumerable<ItemForAdding>>(items));
         }
 
         [HttpGet("{Id}", Name = "GetItem")]
-        public ActionResult<Item> GetItem(int id)
+        public ActionResult<ItemForAdding> GetItem(Guid id)
         {
             Item item = _warehouseInventoryRepository.GetItem(id);
 
@@ -45,21 +43,24 @@ namespace WarehouseInventory.API.Controllers
                 return NotFound();
             }
 
-            return Ok(item);
+            return Ok(_mapper.Map<ItemForAdding>(item));
         }
 
         [HttpPost]
-        public ActionResult<Item> CreateItem(ItemForCreation item)
+        public ActionResult<ItemForAdding> CreateItem(ItemForCreation item)
         {
             Item newItem = _mapper.Map<Item>(item);
 
             _warehouseInventoryRepository.AddItem(newItem);
+            _warehouseInventoryRepository.Save();
 
-            return CreatedAtRoute("GetItem", new {id = newItem.Id }, newItem);
+            var itemToReturn = _mapper.Map<ItemForAdding>(newItem);
+
+            return CreatedAtRoute("GetItem", new {id = newItem.Id }, itemToReturn);
         }
 
         [HttpPut("{Id}")]
-        public ActionResult UpdateItem(int id, ItemForCreation item)
+        public ActionResult UpdateItem(Guid id, ItemForUpdate item)
         {
             Item itemToUpdate = _warehouseInventoryRepository.GetItem(id);
             if(itemToUpdate == null)
@@ -69,13 +70,15 @@ namespace WarehouseInventory.API.Controllers
 
             _mapper.Map(item, itemToUpdate);
 
-            _warehouseInventoryRepository.UpdateItem(item);
+            _warehouseInventoryRepository.UpdateItem(itemToUpdate);
+
+            _warehouseInventoryRepository.Save();
 
             return NoContent();
         }
 
         [HttpPatch("{Id}")]
-        public ActionResult<Item> PartiallyUpdateItem(int id, JsonPatchDocument<ItemForUpdate> patchDocument)
+        public ActionResult<ItemForAdding> PartiallyUpdateItem(Guid id, JsonPatchDocument<ItemForUpdate> patchDocument)
         {
             Item itemToUpdate = _warehouseInventoryRepository.GetItem(id);
 
@@ -88,12 +91,14 @@ namespace WarehouseInventory.API.Controllers
 
             patchDocument.ApplyTo(itemForUpdating, ModelState);
 
+
             if(!TryValidateModel(itemForUpdating))
             {
                 return ValidationProblem(ModelState);
             }
 
             _mapper.Map(itemForUpdating, itemToUpdate);
+            _warehouseInventoryRepository.Save();
 
             return NoContent();
         }

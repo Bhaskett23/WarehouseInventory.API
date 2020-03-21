@@ -4,14 +4,16 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WarehouseInventory.API.Models
+namespace WarehouseInventory.API.Entities
 {
-    public abstract class ItemForManipulation
+    public class Item
     {
-        [Required(ErrorMessage = "A name for items in warehouse is required")]
-        public string Name { get; set; }
+        [Key]
+        public Guid Id { get; set; }
 
         [Required]
+        public string Name { get; set; }
+
         public string Description { get; set; }
 
         [Required]
@@ -19,7 +21,7 @@ namespace WarehouseInventory.API.Models
 
         public string Supplier { get; set; }
 
-        [Required(ErrorMessage = "A selling price is required.")]
+        [Required]
         public double SellingPrice { get; set; }
     }
 }
