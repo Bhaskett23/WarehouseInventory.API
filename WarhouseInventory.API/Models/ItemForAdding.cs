@@ -12,9 +12,10 @@ namespace WarehouseInventory.API.Models
 
         public int Amount { get; set; }
 
-        public string Supplier { get; set; }
+        public string SupplierName { get; set; }
+
+        public Guid SupplierId { get; set; }
 
         public double SellingPrice { get; set; }
-
     }
 }

@@ -13,7 +13,10 @@ namespace WarehouseInventory.API.ItemProfile
 
             CreateMap<Entities.Item, ItemForUpdate>();
 
-            CreateMap<Entities.Item, ItemForAdding>();            
+            CreateMap<Entities.Item, ItemForAdding>()
+                .ForMember(
+                    dest => dest.SupplierName,
+                    opt => opt.MapFrom(x => x.Supplier.Name));            
 
             CreateMap<ItemForCreation, ItemForAdding>();
 

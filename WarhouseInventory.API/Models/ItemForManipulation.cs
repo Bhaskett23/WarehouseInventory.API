@@ -17,7 +17,7 @@ namespace WarehouseInventory.API.Models
         [Required]
         public int Amount { get; set; }
 
-        public string Supplier { get; set; }
+        public Guid SupplierId { get; set; }
 
         [Required(ErrorMessage = "A selling price is required.")]
         public double SellingPrice { get; set; }

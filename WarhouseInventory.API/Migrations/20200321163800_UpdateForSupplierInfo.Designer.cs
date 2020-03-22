@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WarehouseInventory.API.Context;
 
 namespace WarehouseInventory.API.Migrations
 {
     [DbContext(typeof(WarehouseInventoryContext))]
-    partial class WarehouseInventoryContextModelSnapshot : ModelSnapshot
+    [Migration("20200321163800_UpdateForSupplierInfo")]
+    partial class UpdateForSupplierInfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,7 +52,7 @@ namespace WarehouseInventory.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("5b1c2b4d-48c7-402a-80c3-cc796ad49c6b"),
+                            Id = new Guid("a003a0aa-75bf-4334-b255-c477c0d827a6"),
                             Amount = 20,
                             Description = "Comes in multiple shapes.",
                             Name = "Soap",
@@ -59,7 +61,7 @@ namespace WarehouseInventory.API.Migrations
                         },
                         new
                         {
-                            Id = new Guid("d8663e5e-7494-4f81-8739-6e0de1bea7ee"),
+                            Id = new Guid("392f3c6e-77a4-4a22-8269-e8b74da0996e"),
                             Amount = 123,
                             Description = "Model paint",
                             Name = "Citedel paint",
@@ -68,7 +70,7 @@ namespace WarehouseInventory.API.Migrations
                         },
                         new
                         {
-                            Id = new Guid("40ff5488-fdab-45b5-bc3a-14302d59869a"),
+                            Id = new Guid("fa2f4c62-ab3c-4136-8d46-306d9f550794"),
                             Amount = 402,
                             Description = "Collectable card game packs",
                             Name = "Magic the Gathering Packs",

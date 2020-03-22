@@ -21,12 +21,12 @@ namespace WarehouseInventory.API.Services
 
         public Item GetItem(Guid itemId)
         {
-            return _context.Items.FirstOrDefault(x => x.Id == itemId);
+            return _context.Items.Include(x => x.Supplier).FirstOrDefault(x => x.Id == itemId);
         }
 
         public IEnumerable<Item> GetItems()
         {
-            return _context.Items;
+            return _context.Items.Include(x => x.Supplier);
         }
 
         public void AddItem(Item item)
@@ -49,6 +49,35 @@ namespace WarehouseInventory.API.Services
         public bool Save()
         {
             return (_context.SaveChanges() >= 0);
+        }
+
+        public IEnumerable<Supplier> GetSuppliers()
+        {
+            IEnumerable<Supplier> t = _context.Suppliers.Include(x => x.Items);
+            return t;
+        }
+
+        public Supplier GetSupplier(Guid id)
+        {
+            Supplier supplier = _context.Suppliers.Include(x => x.Items).FirstOrDefault(x => x.Id == id);
+            return supplier;
+        }
+
+        public void AddSupplier(Supplier newSupplier)
+        {
+            if(newSupplier == null)
+            {
+                throw new ArgumentNullException(nameof(newSupplier));
+            }
+
+            newSupplier.Id = Guid.NewGuid();
+
+            _context.Suppliers.Add(newSupplier);
+
+        }
+
+        public void UpdateSupplier(Supplier supplier)
+        {
         }
     }
 }
