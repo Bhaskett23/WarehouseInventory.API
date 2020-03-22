@@ -56,5 +56,24 @@ namespace WarehouseInventory.API.Services
             IEnumerable<Supplier> t = _context.Suppliers.Include(x => x.Items);
             return t;
         }
+
+        public Supplier GetSupplier(Guid id)
+        {
+            Supplier supplier = _context.Suppliers.Include(x => x.Items).FirstOrDefault(x => x.Id == id);
+            return supplier;
+        }
+
+        public void AddSupplier(Supplier newSupplier)
+        {
+            if(newSupplier == null)
+            {
+                throw new ArgumentNullException(nameof(newSupplier));
+            }
+
+            newSupplier.Id = Guid.NewGuid();
+
+            _context.Suppliers.Add(newSupplier);
+
+        }
     }
 }

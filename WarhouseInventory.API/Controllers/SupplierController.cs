@@ -28,14 +28,34 @@ namespace WarehouseInventory.API.Controllers
         {
             IEnumerable<Supplier> suppliers = _warehouseInventoryRepository.GetSuppliers();
 
-            Supplier s = suppliers.First(x => x.Id == Guid.Parse("102b566b-ba1f-404c-b2df-e2cde39ade09"));
-
-            Item e = s.Items.FirstOrDefault();
-
             IEnumerable<SupplierForViewing> result = _mapper.Map<IEnumerable<SupplierForViewing>>(suppliers);
 
-
             return Ok(_mapper.Map<IEnumerable<SupplierForViewing>>(suppliers));
+        }
+
+        [HttpGet("{id}", Name = "GetSupplier")]
+        public ActionResult<IEnumerable<SupplierForViewing>> GetSupplier(Guid id)
+        {
+            Supplier suppliers = _warehouseInventoryRepository.GetSupplier(id);
+
+            if(suppliers == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<SupplierForViewing>(suppliers));
+        }
+
+        public ActionResult<SupplierForViewing> CreateSupplier(SupplierForCreation supplier)
+        {
+            Supplier newSupplier = _mapper.Map<Supplier>(supplier);
+
+            _warehouseInventoryRepository.AddSupplier(newSupplier);
+            _warehouseInventoryRepository.Save();
+
+            SupplierForViewing supplierForViewing = _mapper.Map<SupplierForViewing>(newSupplier);
+
+            return CreatedAtRoute("GetSupplier", new { id = supplierForViewing.Id }, supplierForViewing);
         }
     }
 }

@@ -13,6 +13,8 @@ namespace WarehouseInventory.API.ItemProfile
                     dest => dest.ItemsSupplied,
                     opt => opt.MapFrom(x => x.Items)
                 );
+
+            CreateMap<SupplierForCreation, Supplier>();
         }
     }
 }
