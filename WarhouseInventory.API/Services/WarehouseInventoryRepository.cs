@@ -75,5 +75,9 @@ namespace WarehouseInventory.API.Services
             _context.Suppliers.Add(newSupplier);
 
         }
+
+        public void UpdateSupplier(Supplier supplier)
+        {
+        }
     }
 }

@@ -38,7 +38,7 @@ namespace WarehouseInventory.API.Controllers
         {
             Supplier suppliers = _warehouseInventoryRepository.GetSupplier(id);
 
-            if(suppliers == null)
+            if (suppliers == null)
             {
                 return NotFound();
             }
@@ -46,6 +46,7 @@ namespace WarehouseInventory.API.Controllers
             return Ok(_mapper.Map<SupplierForViewing>(suppliers));
         }
 
+        [HttpPost]
         public ActionResult<SupplierForViewing> CreateSupplier(SupplierForCreation supplier)
         {
             Supplier newSupplier = _mapper.Map<Supplier>(supplier);
@@ -57,5 +58,31 @@ namespace WarehouseInventory.API.Controllers
 
             return CreatedAtRoute("GetSupplier", new { id = supplierForViewing.Id }, supplierForViewing);
         }
+
+        [HttpOptions]
+        public IActionResult GetSupplierOptions()
+        {
+            Response.Headers.Add("Allow", "GET,POST,PUT,PATCH,DELETE");
+            return Ok();
+        }
+
+        [HttpPut("{id}")]
+        public ActionResult<SupplierForViewing> UpdateSupplier(Guid id, SupplierForUpdate supplierForUpdate)
+        {
+            Supplier supplier = _warehouseInventoryRepository.GetSupplier(id);
+
+            if(supplier == null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(supplierForUpdate, supplier);
+
+            _warehouseInventoryRepository.UpdateSupplier(supplier);
+            _warehouseInventoryRepository.Save();
+
+            return NoContent();
+        }
+
     }
 }

@@ -17,5 +17,6 @@ namespace WarehouseInventory.API.Services
         IEnumerable<Supplier> GetSuppliers();
         Supplier GetSupplier(Guid id);
         void AddSupplier(Supplier newSupplier);
+        void UpdateSupplier(Supplier supplier);
     }
 }
