@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -59,13 +60,6 @@ namespace WarehouseInventory.API.Controllers
             return CreatedAtRoute("GetSupplier", new { id = supplierForViewing.Id }, supplierForViewing);
         }
 
-        [HttpOptions]
-        public IActionResult GetSupplierOptions()
-        {
-            Response.Headers.Add("Allow", "GET,POST,PUT,PATCH,DELETE");
-            return Ok();
-        }
-
         [HttpPut("{id}")]
         public ActionResult<SupplierForViewing> UpdateSupplier(Guid id, SupplierForUpdate supplierForUpdate)
         {
@@ -84,5 +78,36 @@ namespace WarehouseInventory.API.Controllers
             return NoContent();
         }
 
+        [HttpPatch("{id}")]
+        public ActionResult<SupplierForViewing> PartialUpdateSupplier(Guid id, JsonPatchDocument<SupplierForUpdate> patchDocument)
+        {
+            Supplier supplier = _warehouseInventoryRepository.GetSupplier(id);
+
+            if(supplier == null)
+            {
+                return NotFound();
+            }
+
+            SupplierForUpdate supplierForUpdate = _mapper.Map<SupplierForUpdate>(supplier);
+
+            patchDocument.ApplyTo(supplierForUpdate, ModelState);
+
+            if(!TryValidateModel(supplierForUpdate))
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            _mapper.Map(supplierForUpdate, supplier);
+            _warehouseInventoryRepository.Save();
+
+            return NoContent();
+        }
+
+        [HttpOptions]
+        public IActionResult GetSupplierOptions()
+        {
+            Response.Headers.Add("Allow", "GET,POST,PUT,PATCH,DELETE");
+            return Ok();
+        }
     }
 }
